@@ -1,6 +1,7 @@
-﻿'   --- Day 2: Dive! ---
+﻿'   --- Day 3: Binary Diagnostic ---
 Public Class AOC2021a03
-    Public path As String = "X:\Projekte\Advent of code\advent-of-code_old\2021\adventOfCode\input2021-03.txt"
+    Public path As String = "X:\Projekte\Advent of code\AoC_2021\2021\adventOfCode\input2021-03.txt"
+    'Public path As String = "C:\Users\Notebook\source\input2021-03.txt"
 
     Sub OnStart()
         Dim read As New ReadInput(path)
@@ -13,8 +14,8 @@ Public Class AOC2021a03
             rawData(i) = read.rawData(i)
         Next
         EnergyConsumptionCalc(read.rawData)
-        'AirQualityCalc(read.rawData)
     End Sub
+
     Dim mostCount(11) As Integer 'Oxygen
     Dim leastCount(11) As Integer 'CO2
 
@@ -40,55 +41,110 @@ Public Class AOC2021a03
         Next
 
         For i As Integer = 0 To mostCount.Length - 1
-            Console.Write(mostCount(i)) ' 000101011101
-            Console.Write(leastCount(i)) ' 111010100010
+            'Console.Write(mostCount(i)) ' 000101011101
+            'Console.WriteLine(" ")
+            'Console.Write(leastCount(i)) ' 111010100010
         Next
-        AirQualityCalc(inputArr)
+        O2Rate(inputArr)
     End Sub
 
-    Sub AirQualityCalc(inputArr() As String)
-
-        'meist
-        Dim mostCount As String = "000101011101"
-        Dim leastCount As String = "111010100010"
-        Dim mostBitsList As List(Of String)
-        Dim leastBitsList As List(Of String)
-        Dim str As String
-
-        For i As Integer = 0 To mostCount.Length - 1
-
-
-
-
-
-
-        Next
-
+    Sub O2Rate(inputArr() As String)
+        Dim oxygenRate(inputArr.Length - 1) As String
+        Dim co2Rate(inputArr.Length - 1) As String
+        Dim mostBit As String
+        Dim bufferList As New List(Of String)
 
         For i As Integer = 0 To inputArr.Length - 1
-            str = inputArr(i)
-            If str(0) = mostCount(0) Then
-                mostBitsList.Add(inputArr(i))
+            oxygenRate(i) = inputArr(i)
+            co2Rate(i) = inputArr(i)
+        Next
+
+        For length As Integer = 0 To 11
+            Dim positiveBit As Integer = 0
+            Dim negativeBit As Integer = 0
+            Dim str As String
+
+            'bits zählen
+            For count As Integer = 0 To oxygenRate.Length - 1
+                str = oxygenRate(count)
+                If str(length) = "1" Then
+                    positiveBit += 1
+                Else
+                    negativeBit += 1
+                End If
+            Next
+
+            'bits vergleichen
+            If positiveBit >= negativeBit Then
+                mostBit = "1"
             Else
-                leastBitsList.Add(inputArr(i))
+                mostBit = "0"
+            End If
+
+            'bit Reihen mit mostbit abgleichen. wenn richtig, dann auf liste
+            For i As Integer = 0 To oxygenRate.Length - 1
+                str = oxygenRate(i)
+                If str(length) = mostBit Then
+                    bufferList.Add(str)
+                End If
+            Next
+
+            'redim array, werfe listen inhalt in array, cleare bufferliste
+            ReDim oxygenRate(bufferList.Count - 1)
+            For i As Integer = 0 To bufferList.Count - 1
+                oxygenRate(i) = bufferList(i)
+            Next
+            bufferList.Clear()
+            positiveBit = 0
+            negativeBit = 0
+        Next
+        Console.WriteLine(oxygenRate(0))
+
+        For length As Integer = 0 To 11
+            Dim positiveBit As Integer = 0
+            Dim negativeBit As Integer = 0
+            Dim str As String
+
+            'bits zählen
+            For count As Integer = 0 To co2Rate.Length - 1
+                str = co2Rate(count)
+                If str(length) = "1" Then
+                    positiveBit += 1
+                Else
+                    negativeBit += 1
+                End If
+            Next
+
+            'bits vergleichen
+            If positiveBit < negativeBit Then
+                mostBit = "1"
+            Else
+                mostBit = "0"
+            End If
+
+            'bit Reihen mit mostbit abgleichen. wenn richtig, dann auf liste
+            For i As Integer = 0 To co2Rate.Length - 1
+                str = co2Rate(i)
+                If str(length) = mostBit Then
+                    bufferList.Add(str)
+                End If
+            Next
+
+            Console.WriteLine(bufferList.Count)
+            'redim array, werfe listen inhalt in array, cleare bufferliste
+            If bufferList.Count > 0 Then
+                ReDim co2Rate(bufferList.Count - 1)
+
+                For i As Integer = 0 To bufferList.Count - 1
+                    co2Rate(i) = bufferList(i)
+                Next
+                bufferList.Clear()
+                positiveBit = 0
+                negativeBit = 0
+            Else
+                Exit For
             End If
         Next
-
-        For i As Integer = 0 To mostBitsList.Count - 1
-            Dim arr() As String = {}
-            arr(i) = mostBitsList(i)
-        Next
-
-
-
-
-
+        Console.WriteLine(co2Rate(0))
     End Sub
 End Class
-
-'0001 0101 1101 gamma
-'349
-'1110 1010 0010 epsilon
-'3746
-'1307354
-
