@@ -7,7 +7,9 @@ Module Program
 
     'aktueller Tag
     Sub StartDay()
-
+        'Tag 05 in 2021
+        Dim aoc2021a05 As New AOC2021a05
+        aoc2021a05.OnStart()
     End Sub
 
     'nicht fertig
@@ -16,14 +18,17 @@ Module Program
         Dim aoc2021a04 As New AOC2021a04
         aoc2021a04.OnStart()
 
-        'Tag 05 in 2021
-        Dim aoc2021a05 As New AOC2021a05
-        aoc2021a05.OnStart()
+        'Tag 08 in 2021
+        Dim aoc2021a08 As New AOC2021a08
+        aoc2021a08.OnStart()
     End Sub
-
 
     'vorherige Tage
     Sub LastDays()
+
+        'Tag 07 in 2021
+        Dim aoc2021a07 As New AOC2021a07
+        aoc2021a07.OnStart()
 
         'Tag 06 in 2021
         Dim aoc2021a06 As New AOC2021a06
